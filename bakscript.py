@@ -14,7 +14,7 @@ from email.header import Header
 
 #Define variables
 
-mail_to_list = ['guomin@gemside.com','25787003@qq.com']
+mail_to_list = ['xxx@qq.com','yyy@163.com']
 websource_dir = '/var/www/html/'
 backup_dir = '/var/www/backup/'
 today = time.strftime("%Y%m%d", time.localtime())
@@ -27,7 +27,7 @@ def mysqlBackup(user, password, dbname, backup_dir, today):
     rlt = subprocess.call(cmd,shell = True)
     if rlt == 0:
         status = "yes"
-        download_addr = "www.gemside.net:8080/jsdb_%s.sql.gz" % today
+        download_addr = "www.xxx.com:8080/jsdb_%s.sql.gz" % today
         return status, download_addr
     else:
         status = "no"
@@ -41,7 +41,7 @@ def webpageBackup(websource_dir, backup_dir, today):
     rlt = subprocess.call(cmd,shell = True)
     if rlt == 0:
         status = "yes"
-        download_addr = "www.gemside.net:8080/jsweb_%s.tar.gz" % today
+        download_addr = "www.xxx.com:8080/jsweb_%s.tar.gz" % today
         return status, download_addr
     else:
         status = "no"
@@ -51,7 +51,7 @@ def webpageBackup(websource_dir, backup_dir, today):
 #Define send backup resoult mail function
 
 def sendMail(mail_to_list, dbstatus, db_dladdr, webstatus, web_dladdr):
-    sender = 'gemsidewebsite@163.com'
+    sender = 'xxx@163.com'
     receiver = mail_to_list
     if dbstatus == 'yes' and webstatus == 'yes':
         backupinfo = "MySQL DB Backup is OK, WebPage Backup is OK!"
@@ -59,11 +59,11 @@ def sendMail(mail_to_list, dbstatus, db_dladdr, webstatus, web_dladdr):
         backupinfo = "MySQL DB Backup is OK, WebPage Backup is Failed!"
     elif dbstatus == 'no' and webstatus == 'yes':
         backupinfo = "MySQL DB Backup is Failed, WebPage Backup is OK!"
-    subject = 'Gemside WebSite Backup Email'
+    subject = 'XXX WebSite Backup Email'
     smtpserver = 'smtp.163.com'
-    username = 'gemsidewebsite'
-    password = 'gemside123456'
-    content = "%s Please click link download backup files!\n\nDB Backup Download Address is: %s\nWebPage Backup Download Address is: %s\n\nMail from gemside website." % (backupinfo, db_dladdr, web_dladdr)
+    username = 'xxx'
+    password = 'xxx'
+    content = "%s Please click link download backup files!\n\nDB Backup Download Address is: %s\nWebPage Backup Download Address is: %s\n\nMail from xxx website." % (backupinfo, db_dladdr, web_dladdr)
     msg = MIMEText(content, 'plain')
     msg['Subject'] = Header(subject, 'utf-8')
     smtp = smtplib.SMTP()
@@ -74,12 +74,16 @@ def sendMail(mail_to_list, dbstatus, db_dladdr, webstatus, web_dladdr):
 
 
 def main():
-    user = "root"
-    password = "123456"
-    dbname = "gemside"
+    user = "xxx"
+    password = "xxx"
+    dbname = "xxx"
     dbstatus, db_dladdr = mysqlBackup(user, password, dbname, backup_dir, today)
     webstatus, web_dladdr = webpageBackup(websource_dir, backup_dir, today)
     sendMail(mail_to_list, dbstatus, db_dladdr, webstatus, web_dladdr)
 
 if __name__ == '__main__':
     main()
+
+
+##crontab##
+#0 17 * * 1,3,5 nohup python /var/www/bakscript.py >/dev/null 2>&1 & 
