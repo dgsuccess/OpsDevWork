@@ -2,7 +2,7 @@
 
 ###### Create by Victor 12/08/2013 #####
 
-#coding:utf-8
+#-*-coding:utf-8-*-
 
 import subprocess
 import os
